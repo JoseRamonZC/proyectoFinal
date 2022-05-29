@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo Posts{% endblock %}
+
+{% block body %}
+    <h1>Crea un Posts</h1>
+
+    {{ include('posts_crud/_form.html.twig') }}
+
+    <a href="{{ path('app_posts_crud_index') }}">Volver</a>
+{% endblock %}

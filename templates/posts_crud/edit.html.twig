@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Posts{% endblock %}
+
+{% block body %}
+    <h1>Editar Posts</h1>
+
+    {{ include('posts_crud/_form.html.twig', {'button_label': 'Actualizar'}) }}
+
+    <a href="{{ path('app_posts_crud_index') }}">Volver</a>
+
+    {{ include('posts_crud/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Guitarrón{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrapC2.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}">
+        {% endblock %}
+
+    </head>
+    <body>
+      {% block body %}
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+            <a class="navbar-brand mr-4" href="{{ path('app_dashboard') }}">Guitarrón</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item ml-3">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% if app.request.get('_route') == "RegistrarPost" %}
+                  <a class="nav-link a active" aria-current="page" href="{{ path('RegistrarPost') }}">Crear Post</a>
+                  {% else %}
+                  <a class="nav-link a" aria-current="page" href="{{ path('RegistrarPost') }}">Crear Post</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                {% if app.request.get('_route') == "misPosts" %}
+                  <a class="nav-link a ml-3 mr-5 active" href="{{ path('misPosts') }}">Mis Posts</a>
+                  {% else %}
+                  <a class="nav-link a ml-3 mr-3" href="{{ path('misPosts') }}">Mis Posts</a>
+                  {% endif %}
+                </li>
+
+                {# Comprobamos que el usuario este registrado #}
+
+                  
+                    <a href="{{ path('app_logout') }}"><button class="boton-nav a">Logout</button></a>
+                  {% else %}
+                    <a href="{{ path('app_login') }}"><button class="boton-nav a mr-3">Login</button></a>
+                    <a href="{{ path('app_registro') }}"><button class="boton-nav a mr-3">Registrate</button></a>
+                  {% endif %}
+
+                {# Comprobamos que el usuario sea admin #}
+                
+                {% if is_granted('ROLE_ADMIN') %}
+                  <div class="btn-group" role="group">
+                        <button type="button" class="btn-primary ml-3" onclick="window.location.href='{{ path('app_posts_crud_index') }}'">📰</button>
+                        <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_user_crud_index') }}'">🙍‍♂️</button>
+                  </div>
+                {% endif %}
+            </div>
+          </div>
+        </nav> 
+          <script src="{{ asset('js/jquery.min.js') }}"></script>
+          <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script>
+        
+        {% endblock %}
+    </body>
+</html>

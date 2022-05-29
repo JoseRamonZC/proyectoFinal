@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Posts;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @method Posts|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Posts|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Posts[]    findAll()
+ * @method Posts[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class PostsRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Posts::class);
+    }
+
+    public function BuscarTodosLosPost(){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT post.id, post.titulo, post.foto, post.fecha_publicacion, user.nombre
+                 FROM App:Posts post
+                 JOIN post.user user
+            ');
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function BuscarTodosLosPosts(){
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT post.id, post.titulo, post.foto, post.fecha_publicacion, user.nombre
+                From App:Posts post
+                JOIN post.user user
+            ');
+    }
+
+      /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add(Posts $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove(Posts $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+}
